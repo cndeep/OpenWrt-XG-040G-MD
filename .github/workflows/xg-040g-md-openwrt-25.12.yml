@@ -122,7 +122,6 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a -f
-          wget -O feeds/packages/lang/rust/Makefile https://raw.githubusercontent.com/immortalwrt/packages/refs/heads/master/lang/rust/Makefile
 
       - name: Install third-party packages (homeproxy, passwall)
         working-directory: ./openwrt/package
