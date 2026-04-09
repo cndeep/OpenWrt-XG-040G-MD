@@ -137,21 +137,6 @@ if [ -d "openwrt-passwall-packages" ]; then
 	rm -rf openwrt-passwall-packages
 fi
 
-# 修复上游内核补丁文件末尾缺少换行的问题，否则 patch 会报 malformed patch。
-KERNEL_PATCH_FIX="../target/linux/generic/pending-6.12/499-mtd-spinand-FudanMicro-FM25G02B.patch"
-if [ -f "$KERNEL_PATCH_FIX" ]; then
-	echo " "
-	echo "=========================================="
-	echo "Fixing malformed kernel patch EOF..."
-	echo "=========================================="
-	if [ -n "$(tail -c1 "$KERNEL_PATCH_FIX" 2>/dev/null)" ]; then
-		printf '\n' >> "$KERNEL_PATCH_FIX"
-		echo "Appended missing newline: $KERNEL_PATCH_FIX"
-	else
-		echo "Kernel patch EOF already looks good: $KERNEL_PATCH_FIX"
-	fi
-fi
-
 echo " "
 echo "=========================================="
 echo "Package updates completed!"
