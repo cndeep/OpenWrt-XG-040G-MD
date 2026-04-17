@@ -122,10 +122,8 @@ jobs:
       - name: Update & Install feeds
         working-directory: ./openwrt
         run: |
-          sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a -f
-          rm -rf feeds/smpackage/{base-files,tcping,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
 
       - name: Install third-party packages (homeproxy, passwall)
         working-directory: ./openwrt/package
@@ -138,6 +136,7 @@ jobs:
         run: |
           chmod +x $GITHUB_WORKSPACE/scripts/modify.sh
           bash $GITHUB_WORKSPACE/scripts/modify.sh
+          git clone --depth=1 https://github.com/laipeng668/luci-app-gecoosac package/luci-app-gecoosac
 
       - name: Hotfix rust llvm CI option
         working-directory: ./openwrt
