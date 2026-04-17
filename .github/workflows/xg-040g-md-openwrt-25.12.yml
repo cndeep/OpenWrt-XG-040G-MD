@@ -122,9 +122,9 @@ jobs:
       - name: Update & Install feeds
         working-directory: ./openwrt
         run: |
+          sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a -f
-          sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
           rm -rf feeds/smpackage/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
 
       - name: Install third-party packages (homeproxy, passwall)
