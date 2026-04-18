@@ -41,7 +41,7 @@ UPDATE_PACKAGE() {
 	# 处理克隆的仓库
 	if [[ "$PKG_SPECIAL" == "pkg" ]]; then
 		# 从大杂烩仓库中提取特定包
-		find ./$REPO_NAME/*/ -maxdepth 3 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./ \;
+		find ./$REPO_NAME/ -maxdepth 4 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./ \;
 		rm -rf ./$REPO_NAME/
 	elif [[ "$PKG_SPECIAL" == "name" ]]; then
 		# 重命名仓库
@@ -107,12 +107,33 @@ else
 fi
 
 # luci-app-vlmcsd (KMS 激活服务管理界面)
-# 从 immortalwrt/luci 仓库中提取 luci-app-vlmcsd
-UPDATE_PACKAGE "luci-app-vlmcsd" "immortalwrt/luci" "master" "pkg"
+# 从 immortalwrt/luci 仓库中单独提取
+echo " "
+echo "=========================================="
+echo "Processing: luci-app-vlmcsd from immortalwrt/luci"
+echo "=========================================="
 
-# vlmcsd (KMS 服务端程序，可选 - 如果 feeds 中没有则需要此包)
-# 注意：vlmcsd 可能已在 feeds 中，如果编译时提示找不到再取消下面的注释
-UPDATE_PACKAGE "vlmcsd" "immortalwrt/vlmcsd" "master"
+# 删除 feeds 中可能存在的 luci-app-vlmcsd
+rm -rf ../feeds/luci/applications/luci-app-vlmcsd 2>/dev/null
+rm -rf ../feeds/luci/luci-app-vlmcsd 2>/dev/null
+rm -rf ./luci-app-vlmcsd 2>/dev/null
+
+# 浅克隆 immortalwrt/luci 仓库
+git clone --depth=1 --single-branch --branch master "https://github.com/immortalwrt/luci.git"
+
+if [ -d "luci" ]; then
+    # 复制 luci-app-vlmcsd 到当前目录
+    if [ -d "luci/applications/luci-app-vlmcsd" ]; then
+        cp -rf luci/applications/luci-app-vlmcsd ./
+        echo "Successfully extracted luci-app-vlmcsd"
+    else
+        echo "ERROR: luci-app-vlmcsd not found in cloned repository"
+    fi
+    # 删除克隆的仓库
+    rm -rf luci
+else
+    echo "ERROR: Failed to clone immortalwrt/luci repository"
+fi
 
 # PassWall (代理软件)
 UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
@@ -132,7 +153,7 @@ echo " "
 echo "=========================================="
 echo "Installing PassWall dependencies..."
 echo "=========================================="
-git clone --depth=1 --single-branch --branch main "https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git"
+git clone --depth=1 --single-branch --branch main "https://github.com/xiaorouji/openwrt-passwall-packages.git"
 if [ -d "openwrt-passwall-packages" ]; then
 	for pkg in openwrt-passwall-packages/*/; do
 		pkg_name=$(basename "$pkg")
