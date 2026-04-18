@@ -132,7 +132,7 @@ echo " "
 echo "=========================================="
 echo "Installing PassWall dependencies..."
 echo "=========================================="
-git clone --depth=1 --single-branch --branch main "https://github.com/xiaorouji/openwrt-passwall-packages.git"
+git clone --depth=1 --single-branch --branch main "https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git"
 if [ -d "openwrt-passwall-packages" ]; then
 	for pkg in openwrt-passwall-packages/*/; do
 		pkg_name=$(basename "$pkg")
