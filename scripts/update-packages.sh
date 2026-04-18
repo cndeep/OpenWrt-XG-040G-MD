@@ -106,6 +106,14 @@ else
 	echo "WARNING: No LuCI collection Makefile found, skip theme default patch"
 fi
 
+# luci-app-vlmcsd (KMS 激活服务管理界面)
+# 从 immortalwrt/luci 仓库中提取 luci-app-vlmcsd
+UPDATE_PACKAGE "luci-app-vlmcsd" "immortalwrt/luci" "master" "pkg"
+
+# vlmcsd (KMS 服务端程序，可选 - 如果 feeds 中没有则需要此包)
+# 注意：vlmcsd 可能已在 feeds 中，如果编译时提示找不到再取消下面的注释
+UPDATE_PACKAGE "vlmcsd" "immortalwrt/vlmcsd" "master"
+
 # PassWall (代理软件)
 UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
 PATCH_PASSWALL_GLOBAL_LUA
@@ -124,7 +132,7 @@ echo " "
 echo "=========================================="
 echo "Installing PassWall dependencies..."
 echo "=========================================="
-git clone --depth=1 --single-branch --branch main "https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git"
+git clone --depth=1 --single-branch --branch main "https://github.com/xiaorouji/openwrt-passwall-packages.git"
 if [ -d "openwrt-passwall-packages" ]; then
 	for pkg in openwrt-passwall-packages/*/; do
 		pkg_name=$(basename "$pkg")
