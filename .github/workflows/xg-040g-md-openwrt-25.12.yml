@@ -130,7 +130,13 @@ jobs:
         run: |
           chmod +x $GITHUB_WORKSPACE/scripts/update-packages.sh
           bash $GITHUB_WORKSPACE/scripts/update-packages.sh
-          
+
+      - name: Install modify
+        working-directory: ./openwrt
+        run: |
+          chmod +x $GITHUB_WORKSPACE/scripts/modify.sh
+          bash $GITHUB_WORKSPACE/scripts/modify.sh
+
       - name: Hotfix rust llvm CI option
         working-directory: ./openwrt
         run: |
@@ -222,9 +228,11 @@ jobs:
           设备型号: XG-040G-MD
           构建时间: $(date +"%Y-%m-%d %H:%M")
           内核版本: 6.12.X
+          LAN地址: 192.168.6.1
           源码仓库: $REPO_URL
           分支: $REPO_BRANCH
           EOF
+          echo "$(grep -oP "luci-app(-[a-zA-Z0-9]{1,}){1,}" ${{ env.FIRMWARE }}/*.manifest | awk -F":" '{print $NF}')"  >> release.txt
 
       - name: Publish GitHub Release
         uses: ncipollo/release-action@v1
