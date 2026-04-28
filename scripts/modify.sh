@@ -13,3 +13,6 @@ sed -i 's/192.168.1.1/192.168.6.1/g' package/base-files/files/bin/config_generat
 sed -i 's/OpenWrt/DeepWrt/g' package/base-files/image-config.in
 sed -i 's/OpenWrt/DeepWrt/g' include/version.mk
 sed -i 's/OpenWrt/DeepWrt/g' package/base-files/files/bin/config_generate
+
+mkdir -p "package/base-files/files/etc/uci-defaults"
+cp -f "../patch/99_fix-airoha-mac" "package/base-files/files/etc/uci-defaults/99_fix-airoha-mac"
