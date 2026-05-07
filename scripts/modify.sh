@@ -24,3 +24,6 @@ cp -f "../patch/an7581-nowifi.dtsi" "target/linux/airoha/dts/an7581-nowifi.dtsi"
 sed -i 's|include ../../luci.mk|include $(TOPDIR)/feeds/luci/luci.mk|' package/luci-app-airoha-npu/Makefile
 sed -i 's/PKG_VERSION:=1.13.11/PKG_VERSION:=1.12.25/' package/sing-box/Makefile
 sed -i 's/PKG_HASH:=5e35f2cc0ad14d3beb1956157fe3f4b3a36787dd115f247c72f2d550d353853b/PKG_HASH:=881435f07b5ab8170ccf3cb69e87130759521dc0ed1ae4bfeacbe7772a93a158/' package/sing-box/Makefile
+
+sed -i 's/GMT0/GMT+8/g' package/base-files/files/bin/config_generate
+sed -i 's#UTC#Asia/Shanghai#g' package/base-files/files/bin/config_generate
